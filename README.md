@@ -11,7 +11,7 @@ podman run --rm --tz=Asia/Shanghai --network=host -it -v "${pwd}/RedisJSON":/dat
 
 #### Python Workground
 ```shell
-docker run --rm -v /etc/localtime:/etc/localtime:ro --network=host -it redsos/python:3.9-tencentyun python --version
+docker run --rm -v /etc/localtime:/etc/localtime:ro --network=host -it redsos/python:3.9-tencentyun pip freeze
 ```
 
 
