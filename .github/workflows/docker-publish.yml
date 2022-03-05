@@ -44,5 +44,5 @@ jobs:
         with:
           context: ./node/16-tencentyun
           push: true
-          tags: redsos/python:16-tencentyun
+          tags: redsos/node:16-tencentyun
           
