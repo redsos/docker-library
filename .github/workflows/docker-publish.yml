@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  docker:
+  rust:
     runs-on: ubuntu-latest
     steps:
       -
@@ -24,19 +24,49 @@ jobs:
         with:
           context: ${{ github.workspace }}/rust/1.58-tencentyun
           push: true
-          tags: redsos/rust:1.58-tencentyun
+          tags: |
+            redsos/rust:latest
+            redsos/rust:1.58-tencentyun
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Python build and push
         uses: docker/build-push-action@v2
         with:
           context: ${{ github.workspace }}/python/3.9-tencentyun
           push: true
-          tags: redsos/python:3.9-tencentyun
+          tags: |
+            redsos/python:latest
+            redsos/python:3.9-tencentyun
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Node build and push
         uses: docker/build-push-action@v2
         with:
           context: ${{ github.workspace }}/node/16-tencentyun
           push: true
-          tags: redsos/node:16-tencentyun
+          tags: |
+            redsos/node:latest
+            redsos/node:16-tencentyun
           
