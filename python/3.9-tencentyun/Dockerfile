@@ -8,16 +8,12 @@ COPY requirements.txt .
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN echo 'deb http://mirrors.tencentyun.com/debian/ bullseye main contrib non-free' > /etc/apt/sources.list \
-    && echo 'deb http://mirrors.tencentyun.com/debian/ bullseye-updates main contrib non-free' >> /etc/apt/sources.list \
-    && echo 'deb http://mirrors.tencentyun.com/debian/ bullseye-backports main contrib non-free' >> /etc/apt/sources.list \
-    && echo 'deb http://mirrors.tencentyun.com/debian-security bullseye-security main contrib non-free' >> /etc/apt/sources.list \
-    && apt-get update \
+RUN apt-get update \
     # MySQL
     && apt-get install -yq --no-install-recommends default-libmysqlclient-dev gcc \
     && apt-get install -yq --no-install-recommends gettext wait-for-it git \
-    && python -m pip install --upgrade pip -i http://mirrors.tencentyun.com/pypi/simple --trusted-host mirrors.tencentyun.com \
-    && pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt -i http://mirrors.tencentyun.com/pypi/simple --trusted-host mirrors.tencentyun.com
+    && python -m pip install --upgrade pip \
+    && pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt 
 
 # final stage
 FROM python:3.9-slim
@@ -30,18 +26,15 @@ COPY --from=builder /app/requirements.txt /
 
 # COPY docker-entrypoint.sh /usr/local/bin/
 
-RUN echo 'deb http://mirrors.tencentyun.com/debian/ bullseye main contrib non-free' > /etc/apt/sources.list \
-    && echo 'deb http://mirrors.tencentyun.com/debian/ bullseye-updates main contrib non-free' >> /etc/apt/sources.list \
-    && echo 'deb http://mirrors.tencentyun.com/debian/ bullseye-backports main contrib non-free' >> /etc/apt/sources.list \
-    && echo 'deb http://mirrors.tencentyun.com/debian-security bullseye-security main contrib non-free' >> /etc/apt/sources.list \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -yq --no-install-recommends gettext \
     && apt-get install -yq --no-install-recommends default-libmysqlclient-dev \
-    # 调试工具
     && apt-get install -yq --no-install-recommends procps lsof \
     && pip install --no-cache /wheels/* \
-    && python -m pip install --no-cache-dir --upgrade pip -i http://mirrors.tencentyun.com/pypi/simple --trusted-host mirrors.tencentyun.com \
-    && rm -rf /var/lib/apt/lists/*
+    && python -m pip install --no-cache-dir --upgrade pip \
+    && rm -rf /var/lib/apt/lists/* \
+    && sed -i 's/deb.debian.org/mirrors.tencentyun.com/g' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/mirrors.tencentyun.com/g' /etc/apt/sources.list
 
 # RUN ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh
 
