@@ -1,0 +1,12 @@
+django
+mysqlclient
+django-redis
+gunicorn
+uvicorn[standard]
+Pillow
+ujson
+python-dotenv
+requests
+
+git+https://gitee.com/shard/django-celery-beat@master#egg=django-celery-beat 
+django-celery-results==2.2.0
