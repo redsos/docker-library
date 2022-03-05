@@ -39,7 +39,7 @@ jobs:
           push: true
           tags: redsos/python:3.9-tencentyun
       -
-        name: Build and push (Python)
+        name: Build and push (Node)
         uses: docker/build-push-action@v2
         with:
           context: ./node/16-tencentyun
